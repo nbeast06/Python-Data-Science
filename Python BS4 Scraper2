@@ -1,0 +1,30 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Sun Jun 23 20:52:34 2019
+
+@author: Mangila
+"""
+from urllib.request import urlopen as uReq
+from bs4 import BeautifulSoup as soup
+
+#Poundit
+my_url = "https://www.poundit.com/collections/earphones"
+
+#offloads url content into a string 
+uClient = uReq(my_url)
+page_html = uClient.read()
+uClient.close()
+
+page_soup = soup(page_html, "html.parser")
+
+
+containers = page_soup.find_all("article",{"class":"productgrid--item"})
+
+for container in containers:
+    val = container.find_all("script")[0]
+    val_str = str(val)
+    prod_temp = val_str.split(",")[5]
+    prod_name = prod_temp.split("\"")[1]
+    price_temp = val_str.split(",")[3]
+    price_name = price_temp.split(":")[1]
+    print ("Product: "+ prod_name+"  Price: "+price_name)
