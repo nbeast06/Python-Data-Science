@@ -1,0 +1,30 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Mon Jun 24 16:30:23 2019
+
+@author: 7175125
+"""
+import csv
+from bs4 import BeautifulSoup
+
+x2=[]
+y2=[]
+
+infile = open("SampleXML.xml", "r")
+contents = infile.read()
+soup =  BeautifulSoup(contents,'xml')
+infile.close
+Maps = soup.find_all('Map')
+for mapz in Maps:
+    x = mapz.find_all('Description')[0].text
+    y = mapz.find_all('Code')[0].text
+    #print (x + " " + y)
+    x2.append(x)
+    y2.append(y)
+    
+with open('test.csv', mode = 'w') as csv_file:
+    fieldnames=['Description','Code']
+    writer = csv.DictWriter(csv_file, fieldnames=fieldnames, lineterminator = '\n')
+    writer.writeheader()
+    for i in range(0,len(x2)-1,1):
+        writer.writerow({'Description': x2[i], 'Code': y2[i]})
